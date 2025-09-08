@@ -4,46 +4,46 @@
 #include <string>
 using namespace std;
 
-// Abstract base class: Asset (encapsulation + polymorphism)
+// Traditional runtime polymorphism Asset base class
 class Asset {
   protected:
-    string symbol_;
-    double price_;
+    string assetSymbol;
+    double assetPrice;
 
   public:
     Asset(string symbol, double price)
-        : symbol_(symbol), price_(price){};
+        : assetSymbol(move(symbol)), assetPrice(price) {}
 
     // virtual function
     virtual ~Asset() = default;
-    virtual const string& get_symbol() const;
-    virtual double get_price() const;
-    virtual void update_price(double new_price);
+    virtual const string& getSymbol() const;
+    virtual double getPrice() const;
+    virtual void updatePrice(double newPrice);
 
     // pure virtual function
-    virtual void print_info() const = 0;
+    virtual void printInfo() const = 0;
 };
 
-// Derived class: Stock (inheritance  + polymorphism)
+// Runtime polymorphism Stock (inheritance + polymorphism)
 class Stock : public Asset {
   private:
-    string industry_;
+    string industry;
 
   public:
-    Stock(string symbol, double price, string industry)
-        : Asset(move(symbol), price), industry_(move(industry)) {}
-    void print_info() const override;
+    Stock(string symbol, double price, string industryType)
+        : Asset(move(symbol), price), industry(move(industryType)) {}
+    void printInfo() const override;
 };
 
-// Derived class: Future (inheritance + polymorphism)
+// Runtime polymorphism Future (inheritance + polymorphism)
 class Future : public Asset {
   private:
-    string end_date_;
+    string endDate;
 
   public:
-    Future(string symbol, double price, string end_date)
-        : Asset(move(symbol), price), end_date_(move(end_date)) {}
-    void print_info() const override;
+    Future(string symbol, double price, string expiryDate)
+        : Asset(move(symbol), price), endDate(move(expiryDate)) {}
+    void printInfo() const override;
 };
 
 #endif

@@ -4,48 +4,48 @@
 
 using namespace std;
 
-void Market::add_asset(Asset* asset) {
-    cout << "Added asset: " << asset->get_symbol() << endl;
-    assets_.push_back(asset);
+void Market::addAsset(Asset* asset) {
+    cout << "Added asset: " << asset->getSymbol() << endl;
+    marketAssets.push_back(asset);
 }
 
-void Market::add_user(User* user) {
-    cout << "Added user: " << user->name() << " (" << user->user_type() << ")" << endl;
-    users_.push_back(user);
+void Market::addUser(User* user) {
+    cout << "Added user: " << user->getName() << " (" << user->getUserType() << ")" << endl;
+    marketUsers.push_back(user);
 }
 
-Asset* Market::find_asset(const string& symbol) {
-    for (auto* a : assets_) {
-        if (a->get_symbol() == symbol)
-            return a;
+Asset* Market::findAsset(const string& symbol) {
+    for (auto* asset : marketAssets) {
+        if (asset->getSymbol() == symbol)
+            return asset;
     }
     cout << "Asset " << symbol << " not found" << endl;
     return nullptr;
 }
 
-User* Market::find_user(const string& name) {
-    for (auto* u : users_) {
-        if (u->name() == name)
-            return u;
+User* Market::findUser(const string& name) {
+    for (auto* user : marketUsers) {
+        if (user->getName() == name)
+            return user;
     }
     cout << "User " << name << " not found" << endl;
     return nullptr;
 }
 
 // polymorphic
-void Market::list_assets() const {
+void Market::listAssets() const {
     cout << "Market assets:" << endl;
-    for (const auto* a : assets_) {
-        a->print_info();
+    for (const auto* asset : marketAssets) {
+        asset->printInfo();
     }
 }
 
 // destructor
 Market::~Market() {
-    for (auto* a : assets_) {
-        delete a;
+    for (auto* asset : marketAssets) {
+        delete asset;
     }
-    for (auto* u : users_) {
-        delete u;
+    for (auto* user : marketUsers) {
+        delete user;
     }
 }

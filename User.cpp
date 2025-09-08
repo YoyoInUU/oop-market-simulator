@@ -7,88 +7,88 @@
 using namespace std;
 
 // ---------- User base class ----------
-const string& User::name() const {
-    return name_;
+const string& User::getName() const {
+    return userName;
 }
 
-double User::balance() const {
-    return balance_;
+double User::getBalance() const {
+    return userBalance;
 }
 
-string User::user_type() const {
+string User::getUserType() const {
     return "User";
 }
 
-bool User::buy_asset(Asset& asset, int quantity) {
+bool User::buyAsset(Asset& asset, int quantity) {
     if (quantity <= 0) {
-        cout << name_ << ": invalid quantity." << endl;
+        cout << userName << ": invalid quantity." << endl;
         return false;
     }
 
-    double price = asset.get_price();
+    double price = asset.getPrice();
     double cost = price * quantity;
-    double fee = cost * fee_rate();
+    double fee = cost * getFeeRate();
     double total = cost + fee;
 
-    if (balance_ < total) {
-        cout << name_ << " does not have enough balance to buy " << quantity
-             << " of " << asset.get_symbol() << " (need " << total
-             << ", have " << balance_ << ")" << endl;
+    if (userBalance < total) {
+        cout << userName << " does not have enough balance to buy " << quantity
+             << " of " << asset.getSymbol() << " (need " << total
+             << ", have " << userBalance << ")" << endl;
         return false;
     }
 
-    balance_ -= total;
-    transactions_.emplace_back(name_, asset.get_symbol(), "BUY", price, quantity);
-    cout << name_ << " (" << user_type() << ") bought " << quantity << " of "
-         << asset.get_symbol() << " at " << price << " (fee " << fee << ")" << endl;
-    on_trade(transactions_.back());
+    userBalance -= total;
+    transactions.emplace_back(userName, asset.getSymbol(), "BUY", price, quantity);
+    cout << userName << " (" << getUserType() << ") bought " << quantity << " of "
+         << asset.getSymbol() << " at " << price << " (fee " << fee << ")" << endl;
+    onTrade(transactions.back());
     return true;
 }
 
-bool User::sell_asset(Asset& asset, int quantity) {
+bool User::sellAsset(Asset& asset, int quantity) {
     if (quantity <= 0) {
-        cout << name_ << ": invalid quantity." << endl;
+        cout << userName << ": invalid quantity." << endl;
         return false;
     }
 
-    double price = asset.get_price();
+    double price = asset.getPrice();
     double revenue = price * quantity;
-    double fee = revenue * fee_rate();
+    double fee = revenue * getFeeRate();
     double net = revenue - fee;
 
-    balance_ += net;
-    transactions_.emplace_back(name_, asset.get_symbol(), "SELL", price, quantity);
-    cout << name_ << " (" << user_type() << ") sold " << quantity << " of "
-         << asset.get_symbol() << " at " << price << " (fee " << fee << ")" << endl;
-    on_trade(transactions_.back());
+    userBalance += net;
+    transactions.emplace_back(userName, asset.getSymbol(), "SELL", price, quantity);
+    cout << userName << " (" << getUserType() << ") sold " << quantity << " of "
+         << asset.getSymbol() << " at " << price << " (fee " << fee << ")" << endl;
+    onTrade(transactions.back());
     return true;
 }
 
-void User::print_transactions() const {
-    cout << "Transactions of " << name_ << ":" << endl;
-    for (const auto& t : transactions_) {
-        t.print_transaction();
+void User::printTransactions() const {
+    cout << "Transactions of " << userName << ":" << endl;
+    for (const auto& t : transactions) {
+        t.printTransaction();
     }
 }
 
 // ---------- VipUser with lower fees ----------
-double VipUser::fee_rate() const {
+double VipUser::getFeeRate() const {
     return 0.0001;
 }
 
-string VipUser::user_type() const {
+string VipUser::getUserType() const {
     return "VIP";
 }
 
-string VipUser::on_trade(const Transaction&) {
+string VipUser::onTrade(const Transaction&) {
     return "VIP Trading";
 }
 
 // ---------- NormalUser with higher fees ----------
-double NormalUser::fee_rate() const {
+double NormalUser::getFeeRate() const {
     return 0.002;
 }
 
-string NormalUser::user_type() const {
+string NormalUser::getUserType() const {
     return "Normal";
 }

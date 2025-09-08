@@ -8,49 +8,50 @@
 using namespace std;
 
 int main() {
+    cout << "=== OOP Market Simulator - Runtime Polymorphism ===" << endl;
     Market market;
 
-    // Add assets (inheritance + polymorphism)
-    market.add_asset(new Stock("AAPL", 150.0, "Technology"));
-    market.add_asset(new Stock("GOOG", 2800.0, "Technology"));
-    market.add_asset(new Future("TXO23000A6", 23000, "2026/01/21"));
+    // Add assets using runtime polymorphism (inheritance + virtual functions)
+    market.addAsset(new Stock("AAPL", 150.0, "Technology"));
+    market.addAsset(new Stock("GOOG", 2800.0, "Technology"));
+    market.addAsset(new Future("TXO23000A6", 23000, "2026/01/21"));
 
-    market.list_assets();
+    market.listAssets();
 
     cout << "--------------------" << endl;
 
-    // Add users with different fee models (inheritance + polymorphism)
-    market.add_user(new VipUser("Alice", 10000.0));
-    market.add_user(new NormalUser("Bob", 5000.0));
+    // Add users with different fee models using runtime polymorphism
+    market.addUser(new VipUser("Alice", 10000.0));
+    market.addUser(new NormalUser("Bob", 5000.0));
 
     cout << "--------------------" << endl;
 
     // Locate users and assets
-    User* alice = market.find_user("Alice");
-    User* bob = market.find_user("Bob");
-    Asset* apple = market.find_asset("AAPL");
-    Asset* google = market.find_asset("GOOG");
+    User* alice = market.findUser("Alice");
+    User* bob = market.findUser("Bob");
+    Asset* apple = market.findAsset("AAPL");
+    Asset* google = market.findAsset("GOOG");
 
     if (alice && apple) {
-        alice->buy_asset(*apple, 10);
+        alice->buyAsset(*apple, 10);
     }
 
     if (bob && google) {
-        bob->buy_asset(*google, 2);
+        bob->buyAsset(*google, 2);
     }
 
     if (alice && apple) {
-        alice->sell_asset(*apple, 5);
+        alice->sellAsset(*apple, 5);
     }
 
     if (alice) {
-        alice->user_type();
-        alice->print_transactions();
+        cout << "User Type: " << alice->getUserType() << endl;
+        alice->printTransactions();
     }
 
     if (bob) {
-        bob->user_type();
-        bob->print_transactions();
+        cout << "User Type: " << bob->getUserType() << endl;
+        bob->printTransactions();
     }
 
     return 0;

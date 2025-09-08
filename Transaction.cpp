@@ -7,19 +7,19 @@ using namespace std;
 
 // constructor
 Transaction::Transaction(string user, string symbol, string type, double price, int qty)
-    : user_name_(move(user)),
-      stock_symbol_(move(symbol)),
-      transaction_type_(move(type)),
-      transaction_price_(price),
-      quantity_(qty),
-      timestamp_(time(nullptr)) {}
+    : userName(move(user)),
+      stockSymbol(move(symbol)),
+      transactionType(move(type)),
+      transactionPrice(price),
+      quantity(qty),
+      timestamp(time(nullptr)) {}
 
 // implement
-void Transaction::print_transaction() const {
-    cout << "User: " << user_name_
-         << ", Action: " << transaction_type_
-         << ", Asset: " << stock_symbol_
-         << ", Price: " << transaction_price_
-         << ", Quantity: " << quantity_
-         << ", Time: " << ctime(&timestamp_);
+void Transaction::printTransaction() const {
+    cout << "User: " << userName
+         << ", Action: " << transactionType
+         << ", Asset: " << stockSymbol
+         << ", Price: " << transactionPrice
+         << ", Quantity: " << quantity
+         << ", Time: " << ctime(&timestamp);
 }

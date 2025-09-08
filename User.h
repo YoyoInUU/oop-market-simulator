@@ -9,55 +9,56 @@
 
 using namespace std;
 
+// Runtime polymorphism User base class
 class User {
   protected:
-    string name_;
-    double balance_;
-    vector<Transaction> transactions_;
+    string userName;
+    double userBalance;
+    vector<Transaction> transactions;
 
   public:
-    User(string n, double b)
-        : name_(move(n)), balance_(b) {}
+    User(string name, double balance)
+        : userName(move(name)), userBalance(balance) {}
 
-    const string& name() const;
-    double balance() const;
+    const string& getName() const;
+    double getBalance() const;
 
     // pure virtual function
-    virtual double fee_rate() const = 0;
+    virtual double getFeeRate() const = 0;
 
     // virtual function
     virtual ~User() = default;
-    virtual string user_type() const;
-    virtual string on_trade(const Transaction&) {
+    virtual string getUserType() const;
+    virtual string onTrade(const Transaction&) {
         return "Trading";
     }
 
-    bool buy_asset(Asset& asset, int quantity);
-    bool sell_asset(Asset& asset, int quantity);
+    bool buyAsset(Asset& asset, int quantity);
+    bool sellAsset(Asset& asset, int quantity);
 
-    void print_transactions() const;
+    void printTransactions() const;
 };
 
-// Derived user: VipUser with lower fees
+// Runtime polymorphism VipUser with lower fees
 class VipUser : public User {
   public:
-    VipUser(string n, double b)
-        : User(move(n), b) {}
+    VipUser(string name, double balance)
+        : User(move(name), balance) {}
 
-    double fee_rate() const override;
-    string user_type() const override;
+    double getFeeRate() const override;
+    string getUserType() const override;
 
-    string on_trade(const Transaction&) override;
+    string onTrade(const Transaction&) override;
 };
 
-// Derived user: NormalUser with higher fees
+// Runtime polymorphism NormalUser with higher fees
 class NormalUser : public User {
   public:
-    NormalUser(string n, double b)
-        : User(move(n), b) {}
+    NormalUser(string name, double balance)
+        : User(move(name), balance) {}
 
-    double fee_rate() const override;
-    string user_type() const override;
+    double getFeeRate() const override;
+    string getUserType() const override;
 };
 
 #endif

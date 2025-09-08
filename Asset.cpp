@@ -5,24 +5,26 @@
 using namespace std;
 
 // ---------- Asset base class ----------
-const string& Asset::get_symbol() const {
-    return symbol_;
+const string& Asset::getSymbol() const {
+    return assetSymbol;
 }
 
-double Asset::get_price() const {
-    return price_;
+double Asset::getPrice() const {
+    return assetPrice;
 }
 
-void Asset::update_price(double new_price) {
-    price_ = new_price;
+void Asset::updatePrice(double newPrice) {
+    assetPrice = newPrice;
 }
 
 // ---------- Stock ----------
-void Stock::print_info() const {
-    cout << "Stock: " << symbol_ << ", industry: " << industry_ << ", Current Price: " << price_ << endl;
+void Stock::printInfo() const {
+    cout << "Runtime Stock: " << assetSymbol << ", Industry: " << industry
+         << ", Current Price: " << assetPrice << endl;
 }
 
 // ---------- Future ----------
-void Future::print_info() const {
-    cout << "Future: " << symbol_ << ", End Date: " << end_date_ << ", Current Price: " << price_ << endl;
+void Future::printInfo() const {
+    cout << "Runtime Future: " << assetSymbol << ", End Date: " << endDate
+         << ", Current Price: " << assetPrice << endl;
 }

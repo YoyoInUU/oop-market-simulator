@@ -8,20 +8,20 @@
 
 using namespace std;
 
-// Market class: polymorphically
+// Traditional Market class with runtime polymorphism
 class Market {
   private:
-    vector<Asset*> assets_;
-    vector<User*> users_;
+    vector<Asset*> marketAssets;
+    vector<User*> marketUsers;
 
   public:
-    void add_asset(Asset* asset);
-    void add_user(User* user);
+    void addAsset(Asset* asset);
+    void addUser(User* user);
 
-    Asset* find_asset(const string& symbol);
-    User* find_user(const string& name);
+    Asset* findAsset(const string& symbol);
+    User* findUser(const string& name);
 
-    void list_assets() const;
+    void listAssets() const;
 
     ~Market();
 };
