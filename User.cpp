@@ -4,10 +4,9 @@
 #include "Transaction.h"
 #include "User.h"
 
-using namespace std;
 
 // ---------- User base class ----------
-const string& User::getName() const {
+const std::string& User::getName() const {
     return userName;
 }
 
@@ -15,57 +14,57 @@ double User::getBalance() const {
     return userBalance;
 }
 
-string User::getUserType() const {
+std::string User::getUserType() const {
     return "User";
 }
 
-bool User::buyAsset(Asset& asset, int quantity) {
+bool User::buyAsset(const Asset& asset, int quantity) {
     if (quantity <= 0) {
-        cout << userName << ": invalid quantity." << endl;
+        std::cout << userName << ": invalid quantity." << '\n';
         return false;
     }
 
     double price = asset.getPrice();
-    double cost = price * quantity;
-    double fee = cost * getFeeRate();
-    double total = cost + fee;
+    const double cost = price * quantity;
+    const double fee = cost * getFeeRate();
+    const double total = cost + fee;
 
     if (userBalance < total) {
-        cout << userName << " does not have enough balance to buy " << quantity
+        std::cout << userName << " does not have enough balance to buy " << quantity
              << " of " << asset.getSymbol() << " (need " << total
-             << ", have " << userBalance << ")" << endl;
+             << ", have " << userBalance << ")" << '\n';
         return false;
     }
 
     userBalance -= total;
     transactions.emplace_back(userName, asset.getSymbol(), "BUY", price, quantity);
-    cout << userName << " (" << getUserType() << ") bought " << quantity << " of "
-         << asset.getSymbol() << " at " << price << " (fee " << fee << ")" << endl;
+    std::cout << userName << " (" << getUserType() << ") bought " << quantity << " of "
+         << asset.getSymbol() << " at " << price << " (fee " << fee << ")" << '\n';
     onTrade(transactions.back());
     return true;
 }
 
-bool User::sellAsset(Asset& asset, int quantity) {
+bool User::sellAsset(const Asset& asset, int quantity) {
     if (quantity <= 0) {
-        cout << userName << ": invalid quantity." << endl;
+        std::cout << userName << ": invalid quantity." << '\n';
         return false;
     }
 
     double price = asset.getPrice();
-    double revenue = price * quantity;
-    double fee = revenue * getFeeRate();
-    double net = revenue - fee;
+    const double revenue = price * quantity;
+    const double fee = revenue * getFeeRate();
+    const double net = revenue - fee;
 
     userBalance += net;
     transactions.emplace_back(userName, asset.getSymbol(), "SELL", price, quantity);
-    cout << userName << " (" << getUserType() << ") sold " << quantity << " of "
-         << asset.getSymbol() << " at " << price << " (fee " << fee << ")" << endl;
+    std::cout << userName << " (" << getUserType() << ") sold " << quantity << " of "
+         << asset.getSymbol() << " at " << price << " (fee " << fee << ")" << '\n';
     onTrade(transactions.back());
     return true;
 }
 
 void User::printTransactions() const {
-    cout << "Transactions of " << userName << ":" << endl;
+    std::cout << "Transactions of " << userName << ":" << '\n';
     for (const auto& t : transactions) {
         t.printTransaction();
     }
@@ -76,11 +75,11 @@ double VipUser::getFeeRate() const {
     return 0.0001;
 }
 
-string VipUser::getUserType() const {
+std::string VipUser::getUserType() const {
     return "VIP";
 }
 
-string VipUser::onTrade(const Transaction&) {
+std::string VipUser::onTrade(const Transaction&) {
     return "VIP Trading";
 }
 
@@ -89,6 +88,6 @@ double NormalUser::getFeeRate() const {
     return 0.002;
 }
 
-string NormalUser::getUserType() const {
+std::string NormalUser::getUserType() const {
     return "Normal";
 }

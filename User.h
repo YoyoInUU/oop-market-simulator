@@ -7,34 +7,33 @@
 #include "Asset.h"
 #include "Transaction.h"
 
-using namespace std;
 
 // Runtime polymorphism User base class
 class User {
   protected:
-    string userName;
+    std::string userName;
     double userBalance;
-    vector<Transaction> transactions;
+    std::vector<Transaction> transactions;
 
   public:
-    User(string name, double balance)
-        : userName(move(name)), userBalance(balance) {}
+    User(std::string name, const double balance)
+        : userName(std::move(name)), userBalance(balance) {}
 
-    const string& getName() const;
-    double getBalance() const;
+    [[nodiscard]] const std::string& getName() const;
+    [[nodiscard]] double getBalance() const;
 
     // pure virtual function
-    virtual double getFeeRate() const = 0;
+    [[nodiscard]] virtual double getFeeRate() const = 0;
 
     // virtual function
     virtual ~User() = default;
-    virtual string getUserType() const;
-    virtual string onTrade(const Transaction&) {
+    [[nodiscard]] virtual std::string getUserType() const;
+    virtual std::string onTrade(const Transaction&) {
         return "Trading";
     }
 
-    bool buyAsset(Asset& asset, int quantity);
-    bool sellAsset(Asset& asset, int quantity);
+    bool buyAsset(const Asset& asset, int quantity);
+    bool sellAsset(const Asset& asset, int quantity);
 
     void printTransactions() const;
 };
@@ -42,23 +41,23 @@ class User {
 // Runtime polymorphism VipUser with lower fees
 class VipUser : public User {
   public:
-    VipUser(string name, double balance)
-        : User(move(name), balance) {}
+    VipUser(std::string name, const double balance)
+        : User(std::move(name), balance) {}
 
-    double getFeeRate() const override;
-    string getUserType() const override;
+    [[nodiscard]] double getFeeRate() const override;
+    [[nodiscard]] std::string getUserType() const override;
 
-    string onTrade(const Transaction&) override;
+    std::string onTrade(const Transaction&) override;
 };
 
 // Runtime polymorphism NormalUser with higher fees
 class NormalUser : public User {
   public:
-    NormalUser(string name, double balance)
-        : User(move(name), balance) {}
+    NormalUser(std::string name, const double balance)
+        : User(std::move(name), balance) {}
 
-    double getFeeRate() const override;
-    string getUserType() const override;
+    [[nodiscard]] double getFeeRate() const override;
+    [[nodiscard]] std::string getUserType() const override;
 };
 
 #endif

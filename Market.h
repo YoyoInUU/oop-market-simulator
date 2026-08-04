@@ -1,29 +1,26 @@
 #ifndef MARKET_H
 #define MARKET_H
 
+#include <memory>
+#include <string_view>
 #include <vector>
 
 #include "Asset.h"
 #include "User.h"
 
-using namespace std;
-
 // Traditional Market class with runtime polymorphism
 class Market {
-  private:
-    vector<Asset*> marketAssets;
-    vector<User*> marketUsers;
+  std::vector<std::unique_ptr<Asset>> marketAssets;
+    std::vector<std::unique_ptr<User>> marketUsers;
 
   public:
-    void addAsset(Asset* asset);
-    void addUser(User* user);
+    void addAsset(std::unique_ptr<Asset> asset);
+    void addUser(std::unique_ptr<User> user);
 
-    Asset* findAsset(const string& symbol);
-    User* findUser(const string& name);
+    [[nodiscard]] Asset* findAsset(std::string_view symbol) const;
+    [[nodiscard]] User* findUser(std::string_view name) const;
 
     void listAssets() const;
-
-    ~Market();
 };
 
 #endif

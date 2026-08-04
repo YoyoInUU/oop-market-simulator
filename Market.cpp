@@ -2,50 +2,38 @@
 
 #include "Market.h"
 
-using namespace std;
-
-void Market::addAsset(Asset* asset) {
-    cout << "Added asset: " << asset->getSymbol() << endl;
-    marketAssets.push_back(asset);
+void Market::addAsset(std::unique_ptr<Asset> asset) {
+    std::cout << "Added asset: " << asset->getSymbol() << '\n';
+    marketAssets.push_back(std::move(asset));
 }
 
-void Market::addUser(User* user) {
-    cout << "Added user: " << user->getName() << " (" << user->getUserType() << ")" << endl;
-    marketUsers.push_back(user);
+void Market::addUser(std::unique_ptr<User> user) {
+    std::cout << "Added user: " << user->getName() << " (" << user->getUserType() << ")" << '\n';
+    marketUsers.push_back(std::move(user));
 }
 
-Asset* Market::findAsset(const string& symbol) {
-    for (auto* asset : marketAssets) {
+Asset* Market::findAsset(const std::string_view symbol) const {
+    for (auto& asset : marketAssets) {
         if (asset->getSymbol() == symbol)
-            return asset;
+            return asset.get();
     }
-    cout << "Asset " << symbol << " not found" << endl;
+    std::cout << "Asset " << symbol << " not found" << '\n';
     return nullptr;
 }
 
-User* Market::findUser(const string& name) {
-    for (auto* user : marketUsers) {
+User* Market::findUser(const std::string_view name) const {
+    for (auto& user : marketUsers) {
         if (user->getName() == name)
-            return user;
+            return user.get();
     }
-    cout << "User " << name << " not found" << endl;
+    std::cout << "User " << name << " not found" << '\n';
     return nullptr;
 }
 
 // polymorphic
 void Market::listAssets() const {
-    cout << "Market assets:" << endl;
-    for (const auto* asset : marketAssets) {
+    std::cout << "Market assets:" << '\n';
+    for (auto& asset : marketAssets) {
         asset->printInfo();
-    }
-}
-
-// destructor
-Market::~Market() {
-    for (auto* asset : marketAssets) {
-        delete asset;
-    }
-    for (auto* user : marketUsers) {
-        delete user;
     }
 }
