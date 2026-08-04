@@ -13,7 +13,7 @@ void Market::addUser(std::unique_ptr<User> user) {
 }
 
 Asset* Market::findAsset(const std::string_view symbol) const {
-    for (auto&& asset : marketAssets) {
+    for (auto& asset : marketAssets) {
         if (asset->getSymbol() == symbol)
             return asset.get();
     }
@@ -22,7 +22,7 @@ Asset* Market::findAsset(const std::string_view symbol) const {
 }
 
 User* Market::findUser(const std::string_view name) const {
-    for (auto&& user : marketUsers) {
+    for (auto& user : marketUsers) {
         if (user->getName() == name)
             return user.get();
     }
@@ -33,7 +33,7 @@ User* Market::findUser(const std::string_view name) const {
 // polymorphic
 void Market::listAssets() const {
     std::cout << "Market assets:" << '\n';
-    for (auto&& asset : marketAssets) {
+    for (auto& asset : marketAssets) {
         asset->printInfo();
     }
 }
